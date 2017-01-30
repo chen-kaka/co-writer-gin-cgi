@@ -1,6 +1,7 @@
-# go-gin
+# co-writer-gin-cgi
   
     my project using go gin framework.
+    co writer gin cgi project.
 
 - 1、安装 gin:
 
@@ -19,14 +20,10 @@ lsof -Pn | grep lantern | grep LISTEN
 在 ~/.bash_profile中添加:
 
     export http_proxy=http://127.0.0.1:55945
-
     export https_proxy=$http_proxy
-
     export ftp_proxy=$http_proxy
-
     export rsync_proxy=$http_proxy
-
-    export no_proxy="localhost,127.0.0.1,.dade.com"
+    export no_proxy="localhost,127.0.0.1,.baidu.com"
 
 source ~/.bash_profile
 
@@ -58,6 +55,7 @@ ln -sfv /usr/local/opt/polipo/*.plist ~/Library/LaunchAgents launchctl load ~/Li
 
     export https_proxy=http://localhost:8123
     export ftp_proxy=http://localhost:8123
+    export no_proxy="localhost,127.0.0.1,.baidu.com"
 
 source ~/.bash_profile
 
@@ -67,5 +65,41 @@ source ~/.bash_profile
 go get gopkg.in/gin-gonic/gin.v1
 
 
+## 使用gin-boilerplate作为系统模板
 
+
+    use gin-boilerplate for project template.
+    github: https://github.com/Massad/gin-boilerplate
+
+### 构建系统环境:
+
+- 安装 postgreSQL
+
+- 安装redis
+
+- 进入psql环境
+
+sudo -u kakachan psql postgres
+
+press \q to exit psql command line environment.
+
+- 创建 postgres用户
+
+CREATE USER postgres SUPERUSER;
+
+- 创建postgres数据库
+
+CREATE DATABASE postgres WITH OWNER postgres;
+
+- 导入DB模板:
+
+psql -U postgres -h localhost < ./db/database.sql
+
+- 运行服务:
+
+go run main.go
+
+- 访问浏览器:
+
+http://localhost:9000
 
