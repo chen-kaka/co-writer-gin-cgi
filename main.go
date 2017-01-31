@@ -6,7 +6,7 @@ import (
 	"runtime"
 
 	"./controllers"
-	//"./db"
+	"./db"
 	"./services/middlewares"
 
 	"github.com/gin-gonic/contrib/sessions"
@@ -39,6 +39,9 @@ func main() {
 	store, _ := sessions.NewRedisStore(10, "tcp", "localhost:6379", "", []byte("secret"))
 	r.Use(sessions.Sessions("co-writer-session", store))
 
+	//init mongodb connection
+	db.Connect()
+
 	r.Use(CORSMiddleware())
 	//use mongodb as database store
 	r.Use(middlewares.Connect)
@@ -56,7 +59,6 @@ func main() {
 
 		/*** START Article ***/
 		article := new(controllers.ArticleController)
-		repository := new(controllers.RepositoryController)
 
 		v1.POST("/article", article.Create)
 		v1.GET("/articles", article.All)
@@ -64,6 +66,7 @@ func main() {
 		v1.PUT("/article/:id", article.Update)
 		v1.DELETE("/article/:id", article.Delete)
 
+		repository := new(controllers.RepositoryController)
 		v1.GET("/repository/list", repository.List)
 	}
 

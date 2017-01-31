@@ -5,6 +5,7 @@ import (
 
 	"gopkg.in/mgo.v2"
 	"net/http"
+	"fmt"
 )
 
 type RepositoryController struct{}
@@ -27,14 +28,12 @@ func (ctrl RepositoryController)createRepo(c *gin.Context)  {
 
 // List all repository
 func (ctrl RepositoryController)List(c *gin.Context) {
+	fmt.Printf("repository List")
 	db := c.MustGet("db").(*mgo.Database)
-	articles := []mongodb.Repository{}
-	err := db.C(mongodb.CollectionRepository).Find(nil).Sort("-updated_on").All(&articles)
+	repos := []mongodb.Repository{}
+	err := db.C(mongodb.CollectionRepository).Find(nil).Sort("-create_at").All(&repos)
 	if err != nil {
 		c.Error(err)
 	}
-	c.HTML(http.StatusOK, "articles/list", gin.H{
-		"title":    "Articles",
-		"articles": articles,
-	})
+	c.JSON(http.StatusOK, gin.H{"data": repos})
 }
