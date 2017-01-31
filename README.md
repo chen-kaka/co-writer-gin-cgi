@@ -103,3 +103,14 @@ go run main.go
 
 http://localhost:9000
 
+### 配置mongodb:
+
+- 安装mongo:
+
+go get gopkg.in/mgo.v2
+
+- 参考如下demo project 构建mongodb mgo 连接
+
+https://github.com/madhums/go-gin-mgo-demo
+
+

@@ -64,7 +64,9 @@ func (m UserModel) Signup(form forms.SignupForm) (user User, err error) {
 		panic(err)
 	}
 
-	res, err := getDb.Exec("INSERT INTO public.user(email, password, name, updated_at, created_at) VALUES($1, $2, $3, $4, $5) RETURNING id", form.Email, string(hashedPassword), form.Name, time.Now().Unix(), time.Now().Unix())
+	res, err := getDb.Exec(
+		"INSERT INTO public.user(email, password, name, updated_at, created_at) " +
+	"VALUES($1, $2, $3, $4, $5) RETURNING id", form.Email, string(hashedPassword), form.Name, time.Now().Unix(), time.Now().Unix())
 
 	if res != nil && err == nil {
 		err = getDb.SelectOne(&user, "SELECT id, email, name, updated_at, created_at FROM public.user WHERE email=LOWER($1) LIMIT 1", form.Email)

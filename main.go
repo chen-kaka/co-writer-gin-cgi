@@ -5,8 +5,9 @@ import (
 	"net/http"
 	"runtime"
 
-	"github.com/Massad/gin-boilerplate/controllers"
-	"github.com/Massad/gin-boilerplate/db"
+	"./controllers"
+	//"./db"
+	"./services/middlewares"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -34,12 +35,15 @@ func CORSMiddleware() gin.HandlerFunc {
 func main() {
 	r := gin.Default()
 
+	// use redis as session restore
 	store, _ := sessions.NewRedisStore(10, "tcp", "localhost:6379", "", []byte("secret"))
-	r.Use(sessions.Sessions("gin-boilerplate-session", store))
+	r.Use(sessions.Sessions("co-writer-session", store))
 
 	r.Use(CORSMiddleware())
-
-	db.Init()
+	//use mongodb as database store
+	r.Use(middlewares.Connect)
+	//use postgresdb as database store
+	//db.Init()
 
 	v1 := r.Group("/v1")
 	{
@@ -52,12 +56,15 @@ func main() {
 
 		/*** START Article ***/
 		article := new(controllers.ArticleController)
+		repository := new(controllers.RepositoryController)
 
 		v1.POST("/article", article.Create)
 		v1.GET("/articles", article.All)
 		v1.GET("/article/:id", article.One)
 		v1.PUT("/article/:id", article.Update)
 		v1.DELETE("/article/:id", article.Delete)
+
+		v1.GET("/repository/list", repository.List)
 	}
 
 	r.LoadHTMLGlob("./public/html/*")
@@ -66,7 +73,7 @@ func main() {
 
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
-			"ginBoilerplateVersion": "v0.02",
+			"ginBoilerplateVersion": "v0.01",
 			"goVersion":             runtime.Version(),
 		})
 	})
