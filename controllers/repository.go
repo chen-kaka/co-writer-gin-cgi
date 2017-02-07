@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"time"
 	"errors"
+	"runtime/debug"
 )
 
 type RepositoryController struct{}
@@ -45,6 +46,9 @@ func (ctrl RepositoryController)CreateRepo(c *gin.Context)  {
 	err = db.C(mongodb.CollectionRepository).Insert(repository)
 	if err != nil {
 		c.Error(err)
+		debug.PrintStack()
+		c.JSON(http.StatusExpectationFailed, gin.H{"data": err.Error()})
+		return;
 	}
 	c.JSON(http.StatusOK, gin.H{"data": bson.M{"succ":true}})
 }
