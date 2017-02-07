@@ -8,24 +8,45 @@ import (
 	"fmt"
 	"gopkg.in/mgo.v2/bson"
 	"strconv"
+	"time"
+	"errors"
 )
 
 type RepositoryController struct{}
 
+/**
+    http://localhost:9000/app/repository/create
+    u_id: 58538dcc9822d109091c1d51
+    POST
+ */
 func (ctrl RepositoryController)CreateRepo(c *gin.Context)  {
-	db := c.MustGet("db").(*mgo.Database)
-
 	repository := mongodb.Repository{}
-	err := c.Bind(&repository)
+	err := c.BindJSON(&repository)
 	if err != nil {
 		c.Error(err)
 		return
 	}
 
+	if repository.Name == "" || repository.UId == "" || repository.Description == "" {
+		c.Error(errors.New("params not enough."))
+		c.JSON(http.StatusExpectationFailed, gin.H{"data": bson.M{"msg":"params not enough."}})
+		return;
+	}
+	fmt.Println("desc: ", repository.Description)
+
+	repository.Id = bson.NewObjectId()
+	repository.CreateAt = time.Now()
+	repository.LastUpdate = time.Now()
+	repository.Status = 0
+	repository.Type = 0
+
+	fmt.Println("insert repo: ", repository)
+	db := c.MustGet("db").(*mgo.Database)
 	err = db.C(mongodb.CollectionRepository).Insert(repository)
 	if err != nil {
 		c.Error(err)
 	}
+	c.JSON(http.StatusOK, gin.H{"data": bson.M{"succ":true}})
 }
 
 /**
