@@ -48,7 +48,7 @@ func main() {
 	//use postgresdb as database store
 	//db.Init()
 
-	v1 := r.Group("/v1")
+	v1 := r.Group("/app")
 	{
 		/*** START USER ***/
 		user := new(controllers.UserController)
@@ -67,7 +67,7 @@ func main() {
 		v1.DELETE("/article/:id", article.Delete)
 
 		repository := new(controllers.RepositoryController)
-		v1.GET("/repository/list", repository.List)
+		v1.GET("/repository/list", repository.QueryMyRepos)
 	}
 
 	r.LoadHTMLGlob("./public/html/*")
