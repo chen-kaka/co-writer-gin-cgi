@@ -18,6 +18,6 @@ type Repository struct {
 	LastUpdate 	time.Time	`json:"last_update" form: last_update bson:"last_update"`
 	UId 		bson.ObjectId	`json:"u_id" form: u_id bson:"u_id"` // binding:"required"
 	Description 	string		`json:"description" form: description bson:"description"`
-	Type 		int 		`json: type form: type bson:"type"`
-	Status 		int		`json:"status" form: status bson:"status"`
+	Type 		int 		`json: "type" form:"type" bson:"type"`
+	Status 		int		`json:"status" form: "status" bson:"status"`
 }

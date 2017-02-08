@@ -69,6 +69,10 @@ func main() {
 		repository := new(controllers.RepositoryController)
 		v1.GET("/repository/list", repository.QueryMyRepos)
 		v1.POST("/repository/create", repository.CreateRepo)
+
+		userInfo := new(controllers.UserInfoController)
+		v1.GET("/user_info/info", userInfo.QueryInfo)
+
 	}
 
 	r.LoadHTMLGlob("./public/html/*")
