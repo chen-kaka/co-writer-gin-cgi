@@ -25,13 +25,14 @@ func (ctrl RepositoryController)CreateRepo(c *gin.Context)  {
 	err := c.BindJSON(&repository)
 	if err != nil {
 		c.Error(err)
+		c.JSON(http.StatusExpectationFailed, gin.H{"data": bson.M{"msg":"params not enough."}})
 		return
 	}
 
 	if repository.Name == "" || repository.UId == "" || repository.Description == "" {
 		c.Error(errors.New("params not enough."))
 		c.JSON(http.StatusExpectationFailed, gin.H{"data": bson.M{"msg":"params not enough."}})
-		return;
+		return
 	}
 	fmt.Println("desc: ", repository.Description)
 
@@ -48,7 +49,7 @@ func (ctrl RepositoryController)CreateRepo(c *gin.Context)  {
 		c.Error(err)
 		debug.PrintStack()
 		c.JSON(http.StatusExpectationFailed, gin.H{"data": err.Error()})
-		return;
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": bson.M{"succ":true}})
 }
