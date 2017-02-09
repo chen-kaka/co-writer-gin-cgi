@@ -42,7 +42,7 @@ func (ctrl UserInfoController)QueryInfo(c *gin.Context)  {
     http://localhost:9000/app/user_info/create
     {"username": "chen-kaka","name":"kakachan","nickname":"kaka","email":"chen-kaka@163.com",
     "avatar":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1486632351469&di=5aed748c89a6252365bf52c9ff652224&imgtype=0&src=http%3A%2F%2Fwww.qqzhi.com%2Fuploadpic%2F2014-09-26%2F215403763.jpg"
-    ,"summary":"work hard."}
+    ,"summary":"work hard.","sex":"male"}
     POST
  */
 func (ctrl UserInfoController)CreateUser(c *gin.Context)  {
