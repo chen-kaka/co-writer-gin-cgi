@@ -29,7 +29,7 @@ func (ctrl RepositoryController)CreateRepo(c *gin.Context)  {
 		return
 	}
 
-	if repository.Name == "" || repository.UId == "" || repository.Description == "" {
+	if repository.Name == "" || repository.UId.Hex() == "" || repository.Description == "" {
 		c.Error(errors.New("params not enough."))
 		c.JSON(http.StatusExpectationFailed, gin.H{"data": bson.M{"msg":"params not enough."}})
 		return

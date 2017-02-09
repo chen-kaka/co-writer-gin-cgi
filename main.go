@@ -73,6 +73,10 @@ func main() {
 		userInfo := new(controllers.UserInfoController)
 		v1.GET("/user_info/info", userInfo.QueryInfo)
 		v1.POST("/user_info/create", userInfo.CreateUser)
+
+		comment := new(controllers.CommentController)
+		v1.GET("/comment/query_repo_comment",comment.QueryRepoComment)
+		v1.POST("/comment/create_repo_comment",comment.CreateRepoComment)
 	}
 
 	r.LoadHTMLGlob("./public/html/*")
