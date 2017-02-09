@@ -29,8 +29,7 @@ func (ctrl UserInfoController)QueryInfo(c *gin.Context)  {
 	user := mongodb.User{}
 	//queryId = strings.TrimSpace(queryId)
 	fmt.Println("id is:", queryId, ",length is:",len(queryId) )
-	//queryUser := bson.M{"_id": queryId}
-	err := db.C(mongodb.CollectionUser).FindId(queryId).One(&user)
+	err := db.C(mongodb.CollectionUser).FindId(bson.ObjectIdHex(queryId)).One(&user)
 	if err != nil {
 		c.Error(err)
 	}
